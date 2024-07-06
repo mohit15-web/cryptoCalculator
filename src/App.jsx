@@ -140,7 +140,7 @@ const App = () => {
                   className={`p-2 border rounded-md my-2 w-32 flex justify-center items-center gap-3 ${
                     shortTerm && "border-blue-600 border-2 text-blue-700"
                   }`}
-                  onClick={() => dispatch(setShortTerm())}
+                  onClick={() => dispatch(setShortTerm({ salePrice, purchasePrice, expense }))}
                 >
                   Short Term
                   {shortTerm && (

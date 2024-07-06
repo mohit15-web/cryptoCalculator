@@ -28,23 +28,23 @@ export let cryptoSlice = createSlice({
         action.payload.capitalGain - action.payload.DiscountForLongTerm;
     },
     setTaxRate(state, action) {
-      console.log("_",action.payload);
+      console.log("_", action.payload);
       if (action.payload === "$0-$18,000") {
         state.taxRate = "0%";
       } else if (action.payload == "$18,000-$45,000") {
         console.log("Prateek");
         state.taxRate = "Nil + 19% of excess over $18,200";
-        console.log(state.taxRate , "tax rate");
+        console.log(state.taxRate, "tax rate");
       } else if (action.payload === "$45,000-$120,000") {
         state.taxRate = "$5,092 + 32.5% of excess over $45,000";
         console.log(state.taxRate);
       } else if (action.payload === "$120,000-$180,000") {
         state.taxRate = "$29,400 + 37% of excess over $120,000";
         console.log(state.taxRate);
-      } else if(action.payload === "$180,000+") {
+      } else if (action.payload === "$180,000+") {
         state.taxRate = "$51,665 + 45% of excess over $180,000";
-      }else{
-        state.taxRate = ""
+      } else {
+        state.taxRate = "";
       }
     },
     setLongTerm(state) {
@@ -54,24 +54,28 @@ export let cryptoSlice = createSlice({
         state.DiscountForLongTerm = state.capitalGain / 2;
       }
     },
-    setShortTerm(state) {
+    setShortTerm(state,action) {
       state.longTerm = false;
       state.shortTerm = !state.shortTerm;
+      state.netCapitalGain =
+        Number(action.payload.salePrice) -
+        Number(action.payload.purchasePrice) -
+        Number(action.payload.expense);
     },
-    setTax(state) { 
+    setTax(state) {
       let percentage = extractPercentage(state.taxRate);
       console.log(percentage);
       state.tax = state.netCapitalGain * (percentage / 100);
-    }
+    },
   },
 });
 
 const extractPercentage = (str) => {
   const percentageMatch = str.match(/(\d+(\.\d+)?)%/);
-    if(percentageMatch) {
-      const percentage = parseFloat(percentageMatch[1]);
-      return percentage
-    }
+  if (percentageMatch) {
+    const percentage = parseFloat(percentageMatch[1]);
+    return percentage;
+  }
 };
 
 export default cryptoSlice.reducer;
